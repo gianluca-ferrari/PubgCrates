@@ -46,6 +46,8 @@ Partial Class Main
         Me.txt_SellAt = New System.Windows.Forms.TextBox()
         Me.txt_CrateValue = New System.Windows.Forms.TextBox()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txt_SellableAt = New System.Windows.Forms.TextBox()
         CType(Me.dgv_Items,System.ComponentModel.ISupportInitialize).BeginInit
         Me.Pnl_Stats.SuspendLayout
         Me.SuspendLayout
@@ -134,6 +136,8 @@ Partial Class Main
         Me.Pnl_Stats.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.Pnl_Stats.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Pnl_Stats.Controls.Add(Me.txt_SellableAt)
+        Me.Pnl_Stats.Controls.Add(Me.Label6)
         Me.Pnl_Stats.Controls.Add(Me.chk_Edit)
         Me.Pnl_Stats.Controls.Add(Me.btn_Save)
         Me.Pnl_Stats.Controls.Add(Me.prog_Load)
@@ -239,11 +243,11 @@ Partial Class Main
         'Label2
         '
         Me.Label2.AutoSize = true
-        Me.Label2.Location = New System.Drawing.Point(37, 90)
+        Me.Label2.Location = New System.Drawing.Point(1, 90)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(37, 13)
+        Me.Label2.Size = New System.Drawing.Size(81, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Sell At"
+        Me.Label2.Text = "Sell At Minimum"
         '
         'btn_Download
         '
@@ -258,7 +262,7 @@ Partial Class Main
         'Label1
         '
         Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(14, 64)
+        Me.Label1.Location = New System.Drawing.Point(17, 64)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(62, 13)
         Me.Label1.TabIndex = 2
@@ -279,6 +283,23 @@ Partial Class Main
         Me.txt_CrateValue.ReadOnly = true
         Me.txt_CrateValue.Size = New System.Drawing.Size(95, 20)
         Me.txt_CrateValue.TabIndex = 0
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = true
+        Me.Label6.Location = New System.Drawing.Point(19, 115)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(57, 13)
+        Me.Label6.TabIndex = 12
+        Me.Label6.Text = "Sellable At"
+        '
+        'txt_SellableAt
+        '
+        Me.txt_SellableAt.Location = New System.Drawing.Point(82, 112)
+        Me.txt_SellableAt.Name = "txt_SellableAt"
+        Me.txt_SellableAt.ReadOnly = true
+        Me.txt_SellableAt.Size = New System.Drawing.Size(95, 20)
+        Me.txt_SellableAt.TabIndex = 13
         '
         'Main
         '
@@ -325,4 +346,6 @@ End Sub
     Friend WithEvents cItem As DataGridViewTextBoxColumn
     Friend WithEvents cPrice As DataGridViewTextBoxColumn
     Friend WithEvents cRarity As DataGridViewTextBoxColumn
+    Friend WithEvents txt_SellableAt As TextBox
+    Friend WithEvents Label6 As Label
 End Class

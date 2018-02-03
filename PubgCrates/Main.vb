@@ -11,6 +11,7 @@ Public Class Main
     End Structure
     Class Crate
         Public name As String
+        Public price As Double
         Public items As List(Of CrateItem)
     End Class
 
@@ -128,6 +129,15 @@ Public Class Main
         End Try
     End Sub
 
+    Private Sub FetchCratePrice() Handles txt_SellableAt.DoubleClick
+        Try
+            txt_SellableAt.Text = fetchPriceByName(SelectedCrate.name)
+            txt_SellableAt.BackColor = Main.DefaultBackColor
+        Catch ex As Exception
+            txt_SellableAt.BackColor = Color.Red
+        End Try
+    End Sub
+
     Public Function calculateTaxes(sellPrice As Double) As Double
         Dim cent As Integer = CInt(sellPrice * 100)
         Dim temp As Double
@@ -191,6 +201,7 @@ Public Class Main
                 dgv_Items.Item(cIcon.Index, index).Value = New Bitmap(IconPath(item.name))
             End If
         Next
+        txt_SellableAt.Text = SelectedCrate.price
     End Sub
     Private Sub SaveData()
         If SelectedCrate Is Nothing Then Exit Sub
@@ -204,6 +215,7 @@ Public Class Main
                 .rarityColor = row.Cells(cRarity.Index).Style.BackColor})
         Next
         SelectedCrate.items = bufItems
+        SelectedCrate.price = CDbl(txt_SellableAt.Text)
     End Sub
 
     Private Sub SaveOnFile() Handles btn_Save.Click
@@ -237,6 +249,7 @@ Public Class Main
                 Exit For
             End If
         Next
+        FetchCratePrice()
         Me.Enabled = True
         prog_Load.Visible = False
         dgv_Items.SelectedRows(0).Selected = False
@@ -285,4 +298,5 @@ Public Class Main
             LoadData()
         End If
     End Sub
+
 End Class
