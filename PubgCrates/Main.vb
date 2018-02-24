@@ -1,5 +1,6 @@
 ﻿Option Strict Off
 Imports Newtonsoft.Json
+Imports System.Text.RegularExpressions
 
 Public Class Main
     Structure CrateItem
@@ -59,14 +60,14 @@ Public Class Main
     End Sub
 
     Public Function fetchPriceByName(name As String) As Double
-        name = name.Replace(" ", "%20")
+        name = name.Replace(" ", "%20").Replace("/", "-")
         Dim webClient As New System.Net.WebClient
         Dim resultJson As String = webClient.DownloadString(URL_JSON & name)
         webClient.Dispose()
 
         Dim result As Linq.JObject = Linq.JObject.Parse(resultJson)
         Dim strPrice As String = result.Value(Of String)("lowest_price")
-        strPrice = strPrice.Substring(0, strPrice.Length - 1).Replace(".", ",").Replace("-", "0")
+        strPrice = strPrice.Substring(0, strPrice.Length - 1).Replace(".", ",").Replace("-", "0").Replace(" ", "")
         Return Double.Parse(strPrice)
     End Function
 
@@ -98,6 +99,7 @@ Public Class Main
     End Sub
 
     Private Function IconPath(itemName As String) As String
+        itemName = Regex.Replace(itemName, "[\/:*?<>|]+", "")
         Return ICONS_DIR & SelectedCrate.name & " - " & itemName & ".png"
     End Function
 
@@ -107,7 +109,7 @@ Public Class Main
         Dim iconUrl As String = ""
         Dim web As New HtmlAgilityPack.HtmlWeb()
         Try
-            Dim dom As HtmlAgilityPack.HtmlDocument = web.Load(URL_ITEM & itemName.Replace(" ", "%20"))
+            Dim dom As HtmlAgilityPack.HtmlDocument = web.Load(URL_ITEM & itemName.Replace(" ", "%20").Replace("/", "-"))
             Dim iconUrlNode As HtmlAgilityPack.HtmlNode = dom.GetElementbyId("mypurchase_0_image")
             If iconUrlNode Is Nothing Then
                 dgv_Items.Item(cIcon.Index, rowIndex).ErrorText = "IconUrlNode not found"
@@ -237,6 +239,7 @@ Public Class Main
         If dgv_Items.SelectedCells.Count > 0 Then
             firstIndex = dgv_Items.SelectedCells(0).RowIndex
         End If
+        Wait409.Cancel = False
         For Each row As DataGridViewRow In dgv_Items.Rows
             If row.Index < firstIndex Then Continue For
             row.Selected = True
@@ -252,7 +255,7 @@ Public Class Main
         FetchCratePrice()
         Me.Enabled = True
         prog_Load.Visible = False
-        dgv_Items.SelectedRows(0).Selected = False
+        dgv_Items.ClearSelection()
         UpdateCrateStats()
     End Sub
 
@@ -267,7 +270,7 @@ Public Class Main
                 'go to link
                 Dim item As String = dgv_Items.Item(cItem.Index, e.RowIndex).Value
                 If item Is Nothing Then Exit Sub
-                Process.Start(URL_ITEM & item.Replace(" ", "%20"))
+                Process.Start(URL_ITEM & item.Replace(" ", "%20").Replace("/", "-"))
             Case cPrice.Index
                 'fetch single price
                 fetchItemPrice(e.RowIndex, False)
