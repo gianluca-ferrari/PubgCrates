@@ -260,6 +260,7 @@ Public Class Main
     End Sub
 
     Private Sub dgv_Items_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv_Items.CellDoubleClick
+        If chk_Edit.Checked Then Exit Sub
         If e.RowIndex < 0 OrElse e.ColumnIndex < 0 Then Exit Sub
         Select Case e.ColumnIndex
             Case cRarity.Index
